@@ -1,6 +1,6 @@
 # Projeto para combater a Evasao Escolar.
 
-- integrantes: Lucas Morais e Iago Diotti.
+- Integrantes: Lucas Morais e Iago Diotti.
 - Instuição Evangélica de Novo Hamburgo
 - 1° Semestre
   
