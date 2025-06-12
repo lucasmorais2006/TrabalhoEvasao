@@ -1,1 +1,0 @@
-Alunos = ["Lucas", "Iago", "Guilherme"]

@@ -25,7 +25,7 @@ Base.metadata.create_all(engine)
 Session = sessionmaker(bind=engine)
 session = Session()
 
-
+'''
 # Criar novo usuário
 novo_usuario = Usuario(nome="Aline Sebastiana Melissa Barbosa", presenca = 0 ,faltas = 0,  porcentagem = 100, telefone = "51993492356")
 
@@ -37,3 +37,67 @@ session.commit()
 
 # Fechar sessão
 session.close()
+'''
+
+def nome_alunos():
+    session = Session()
+    try:
+        nomes = [aluno.nome for aluno in session.query(Usuario).all()]
+        return nomes
+    finally:
+        session.close()
+    
+
+def marcar_falta(nome):
+    session = Session()
+    usuario = session.query(Usuario).filter(Usuario.nome == nome).first()
+    if usuario:
+# Atualizar dados
+        usuario.faltas = Usuario.faltas + 1
+        session.commit()
+        print("Usuário atualizado!")
+    else:
+        print("Usuário não encontrado")
+
+    session.close()
+
+def marcar_presenca(nome):
+    session = Session()
+    usuario = session.query(Usuario).filter(Usuario.nome == nome).first()
+    if usuario:
+# Atualizar dados
+        usuario.presenca = Usuario.presenca + 1
+        session.commit()
+        print("Usuário atualizado!")
+    else:
+        print("Usuário não encontrado")
+
+    session.close()
+
+def calcular_porcentagem(nome):
+    session = Session()
+    usuario = session.query(Usuario).filter(Usuario.nome == nome).first()
+    if usuario:
+        if usuario.presenca + usuario.faltas > 0:
+            porcentagem = (usuario.presenca / (usuario.presenca + usuario.faltas)) * 100
+            usuario.porcentagem = porcentagem
+            session.commit()
+            print(f"Porcentagem de presença de {nome}: {porcentagem:.2f}%")
+        else:
+            print(f"{nome} não possui registros de presença ou falta.")
+    else:
+        print("Usuário não encontrado")
+
+    session.close()
+
+def verificar_porcentagem(nome):
+    session = Session()
+    usuario = session.query(Usuario).filter(Usuario.nome == nome).first()
+    if usuario:
+        if usuario.porcentagem < 70:
+            print(usuario.telefone, " - Alerta: Presença abaixo de 70%!", usuario.nome)
+    else:
+        print("Usuário não encontrado")
+        return None
+
+    session.close()
