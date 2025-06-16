@@ -1,6 +1,7 @@
 from sqlalchemy import create_engine, Column, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+import main
 
 # Base para nossos modelos
 
@@ -107,6 +108,7 @@ def adicionar_aluno(nome, telefone):
     novo_usuario = Usuario(nome=nome, presenca=0, faltas=0, porcentagem=0, telefone=telefone)
     session.commit()
     session.close()
+    main.adicionar_tela.quit()
 
 
 def remover_aluno(nome):
@@ -119,4 +121,23 @@ def remover_aluno(nome):
     else:
         print("Usuário não encontrado")
 
+    session.close()
+
+def atualizar_numero(nome, novo_numero):
+    session = Session()
+    usuario = session.query(Usuario).filter(Usuario.nome == nome).first()
+    if usuario:
+        usuario.telefone = novo_numero
+        session.commit()
+        print(f"Número de telefone de {nome} atualizado para {novo_numero}.")
+    else:
+        print("Usuário não encontrado")
+
+    session.close()
+
+def listar_por_presenca():
+    session = Session()
+    usuarios = session.query(Usuario).order_by(Usuario.porcentagem.desc()).all()
+    for usuario in usuarios:
+        print(f"{usuario.nome} - Presença: {usuario.porcentagem:.2f}%")
     session.close()
