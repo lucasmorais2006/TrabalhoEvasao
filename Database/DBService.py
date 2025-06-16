@@ -104,6 +104,19 @@ def verificar_porcentagem(nome):
 
 def adicionar_aluno(nome, telefone):
     session = Session()
-    novo_usuario = Usuario(nome, presenca = 0 ,faltas = 0,  porcentagem = 0, telefone)
+    novo_usuario = Usuario(nome=nome, presenca=0, faltas=0, porcentagem=0, telefone=telefone)
     session.commit()
+    session.close()
+
+
+def remover_aluno(nome):
+    session = Session()
+    usuario = session.query(Usuario).filter(Usuario.nome == nome).first()
+    if usuario:
+        session.delete(usuario)
+        session.commit()
+        print(f"Usuário {nome} removido com sucesso!")
+    else:
+        print("Usuário não encontrado")
+
     session.close()
