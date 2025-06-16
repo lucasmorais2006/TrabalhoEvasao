@@ -101,3 +101,9 @@ def verificar_porcentagem(nome):
         return None
 
     session.close()
+
+def adicionar_aluno(nome, telefone):
+    session = Session()
+    novo_usuario = Usuario(nome, presenca = 0 ,faltas = 0,  porcentagem = 0, telefone)
+    session.commit()
+    session.close()
