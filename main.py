@@ -39,7 +39,8 @@ def atualizar_lista_alunos():
         text="Remover Aluno",
         font=('Arial', 10),
         fg='white',
-        bg='red'
+        bg='red',
+        command=lambda n=nome: Database.DBService.remover_aluno(n) and atualizar_lista_alunos()  # Remove aluno e atualiza a lista
         )
         botao_remover.pack(side='right', pady=2)
         checkboxes[nome] = var
@@ -77,7 +78,5 @@ def abrir_tela_adicionar():
     tk.Button(adicionar_tela, text="Adicionar aluno", font=('Arial', 12), command=adicionar_aluno_callback).pack(anchor='center', pady=(0, 10))
 
 atualizar_lista_alunos()
-
-tk.Button(frame, text="Salvar Presença", font=('Arial', 12), command=salvar_presenca).pack(anchor='w', pady=20)
 
 chamada.mainloop()
