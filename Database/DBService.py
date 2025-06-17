@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine, Column, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-import main
+
 
 # Base para nossos modelos
 
@@ -108,7 +108,6 @@ def adicionar_aluno(nome, telefone):
     novo_usuario = Usuario(nome=nome, presenca=0, faltas=0, porcentagem=0, telefone=telefone)
     session.commit()
     session.close()
-    main.adicionar_tela.quit()
 
 
 def remover_aluno(nome):
