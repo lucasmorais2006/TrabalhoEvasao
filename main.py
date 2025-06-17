@@ -1,5 +1,6 @@
 import tkinter as tk
 import Database.DBService 
+import Alerts
 
 
 
@@ -14,7 +15,7 @@ def salvar_presenca():
        else:
           Database.DBService.marcar_presenca(nome) 
        Database.DBService.calcular_porcentagem(nome)
-       Database.DBService.verificar_porcentagem(nome)
+       Database.DBService.verificar_porcentagem()
        var.set(0) #define a variável (checkbox) como zero para próxima aula
        chamada.quit()  # Limpa o checkbox para próxima aula
 

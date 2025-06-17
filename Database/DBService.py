@@ -1,6 +1,7 @@
 from sqlalchemy import create_engine, Column, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+import Alerts
 
 
 # Base para nossos modelos
@@ -26,19 +27,7 @@ Base.metadata.create_all(engine)
 Session = sessionmaker(bind=engine)
 session = Session()
 
-'''
-# Criar novo usuário
-novo_usuario = Usuario(nome="Aline Sebastiana Melissa Barbosa", presenca = 0 ,faltas = 0,  porcentagem = 100, telefone = "51993492356")
 
-# Adicionar à sessão
-session.add(novo_usuario)
-
-# Salvar no banco
-session.commit()
-
-# Fechar sessão
-session.close()
-'''
 
 def nome_alunos():
     session = Session()
@@ -91,14 +80,26 @@ def calcular_porcentagem(nome):
 
     session.close()
 
-def verificar_porcentagem(nome):
+def get_telefone(nome):
     session = Session()
     usuario = session.query(Usuario).filter(Usuario.nome == nome).first()
     if usuario:
-        if usuario.porcentagem < 70:
-            print(usuario.telefone, " - Alerta: Presença abaixo de 70%!", usuario.nome)
+        return usuario.telefone
     else:
         print("Usuário não encontrado")
+        return None
+
+def verificar_porcentagem():
+    session = Session()
+    usuario = session.query(Usuario).filter(Usuario.nome).all()
+    if usuario:
+        if usuario.porcentagem < 75:
+            print(usuario.telefone, " - Alerta: Presença abaixo de 70%!", usuario.nome)
+            Alerts.enviar_alerta_whatsapp(usuario.nome, get_telefone(usuario.nome))
+        #if usuario.porcentagem < 50:
+           # print(" - Alerta: Presença abaixo de 50%!", usuario.nome)
+            #Alerts.enviar_alerta_presenca(usuario.nome)
+    else:
         return None
 
     session.close()
