@@ -18,6 +18,11 @@ def salvar_presenca():
        var.set(0) #define a variável (checkbox) como zero para próxima aula
        chamada.quit()  # Limpa o checkbox para próxima aula
 
+# Função para remover um aluno e atualizar a lista
+def remover_aluno_e_atualizar(nome_do_aluno):
+    Database.DBService.remover_aluno(nome_do_aluno)
+    atualizar_lista_alunos() # Chama a função que atualiza a interface
+
 
 # Função para atualizar a lista de alunos na tela principal
 def atualizar_lista_alunos():
@@ -40,7 +45,7 @@ def atualizar_lista_alunos():
         font=('Arial', 10),
         fg='white',
         bg='red',
-        command=lambda n=nome: Database.DBService.remover_aluno(n) and atualizar_lista_alunos()  # Remove aluno e atualiza a lista
+        command=lambda n=nome: remover_aluno_e_atualizar (n)  # Remove aluno e atualiza a lista
         )
         botao_remover.pack(side='right', pady=2)
         checkboxes[nome] = var
