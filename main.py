@@ -1,27 +1,21 @@
 import tkinter as tk
 import Database.DBService 
 
-# Lista de nomes exemplo
-nomes_exemplo = [
-    "Ana Paula", "Bruno Henrique", "Carla Mendes", "Daniel Souza",
-    "Eduarda Lima", "Felipe Rocha", "Gabriela Nunes", "Henrique Silva",
-    "Isabela Castro", "João Pedro"
-]
 
 
-# Dicionários para armazenar presença e checkbox
+# Dicionário para armazenar presença com checkbox
 checkboxes = {}
 
  #Função para salvar presença (simula mais uma aula)
 def salvar_presenca():
     for nome, var in checkboxes.items():
-       if var.get() == 0:
+       if var.get() == 0: #Confere se o aluno faltou, se for igual a zero é falta(checkbox vazia)
         Database.DBService.marcar_falta(nome)
        else:
           Database.DBService.marcar_presenca(nome) 
        Database.DBService.calcular_porcentagem(nome)
        Database.DBService.verificar_porcentagem(nome)
-       var.set(0)
+       var.set(0) #define a variável (checkbox) como zero para próxima aula
        chamada.quit()  # Limpa o checkbox para próxima aula
 
 
@@ -32,6 +26,25 @@ chamada.geometry("800x600")
 
 frame = tk.Frame(chamada, padx=30, pady=30)
 frame.pack(anchor='w')
+
+def abrir_tela_adicionar():
+    adicionar_tela = tk.Toplevel(chamada)
+    adicionar_tela.title("Adicionar Aluno")
+    adicionar_tela.geometry("400x300")
+
+    tk.Label(adicionar_tela, text="Nome do Aluno:", font=('Arial', 12)).pack(anchor='w', pady=(10, 0))
+    nome_entry = tk.Entry(adicionar_tela, font=('Arial', 12))
+    nome_entry.pack(anchor='w', padx=20, pady=(0, 10))
+
+    tk.Label(adicionar_tela, text="Telefone do Aluno:", font=('Arial', 12)).pack(anchor='w')
+    telefone_entry = tk.Entry(adicionar_tela, font=('Arial', 12))
+    telefone_entry.pack(anchor='w', padx=20, pady=(0, 20))
+    tk.Button(adicionar_tela, text="Adicionar aluno", font=('Arial', 12), command=Database.DBService.adicionar_aluno).pack(anchor='center', pady=(0, 10))
+    
+
+tk.Button(frame, text="Adicionar aluno", font=('Arial', 12), command=abrir_tela_adicionar).pack(anchor='w', pady=(0, 10))
+
+    
 
 tk.Label(frame, text="Marque os alunos presentes:", font=('Arial', 16)).pack(anchor='w', pady=(0, 15))
 
