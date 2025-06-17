@@ -106,8 +106,10 @@ def verificar_porcentagem(nome):
 def adicionar_aluno(nome, telefone):
     session = Session()
     novo_usuario = Usuario(nome=nome, presenca=0, faltas=0, porcentagem=0, telefone=telefone)
+    session.add(novo_usuario)  
     session.commit()
     session.close()
+
 
 
 def remover_aluno(nome):
