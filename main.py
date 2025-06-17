@@ -30,17 +30,27 @@ def atualizar_lista_alunos():
 
     for nome in Database.DBService.nome_alunos():
         var = tk.IntVar()
-        cb = tk.Checkbutton(frame, text=nome, variable=var, font=('Arial', 12))
-        cb.pack(anchor='w', pady=2)
+        linha_frame = tk.Frame(frame)  # Linha horizontal
+        linha_frame.pack(anchor='w', pady=2, fill='x')
+        cb = tk.Checkbutton(linha_frame, text=nome, variable=var, font=('Arial', 12))
+        cb.pack(side='left', padx=(0, 15))  # Espaço entre nome e botão
+        botao_remover = tk.Button(
+        linha_frame,
+        text="Remover Aluno",
+        font=('Arial', 10),
+        fg='white',
+        bg='red'
+        )
+        botao_remover.pack(side='right', pady=2)
         checkboxes[nome] = var
+
 
     tk.Button(frame, text="Salvar Presença", font=('Arial', 12), command=salvar_presenca).pack(anchor='w', pady=20)
 
 # Interface Tkinter
 chamada = tk.Tk()
 chamada.title("Chamada Escolar (Protótipo)")
-chamada.geometry("800x600")
-
+chamada.geometry("1366x768")
 frame = tk.Frame(chamada, padx=30, pady=30)
 frame.pack(anchor='w')
 
@@ -66,19 +76,7 @@ def abrir_tela_adicionar():
 
     tk.Button(adicionar_tela, text="Adicionar aluno", font=('Arial', 12), command=adicionar_aluno_callback).pack(anchor='center', pady=(0, 10))
 
-    
-    
-
-tk.Button(frame, text="Adicionar aluno", font=('Arial', 12), command=abrir_tela_adicionar).pack(anchor='w', pady=(0, 10))
-
-
-tk.Label(frame, text="Marque os alunos presentes:", font=('Arial', 16)).pack(anchor='w', pady=(0, 15))
-
-for nome in Database.DBService.nome_alunos():
-    var = tk.IntVar()
-    cb = tk.Checkbutton(frame, text=nome, variable=var, font=('Arial', 12))
-    cb.pack(anchor='w', pady=2)
-    checkboxes[nome] = var
+atualizar_lista_alunos()
 
 tk.Button(frame, text="Salvar Presença", font=('Arial', 12), command=salvar_presenca).pack(anchor='w', pady=20)
 
