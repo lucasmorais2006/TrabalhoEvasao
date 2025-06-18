@@ -78,6 +78,7 @@ def abrir_tela_adicionar():
 # Janela principal
 chamada = tk.Tk()
 chamada.title("Chamada Escolar")
+chamada.state('zoomed')
 chamada.geometry("1366x768")
 chamada.configure(bg='#f0f0f0')
 
