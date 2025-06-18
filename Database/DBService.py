@@ -1,7 +1,8 @@
 from sqlalchemy import create_engine, Column, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-import Alerts
+
+#import Alerts
 
 
 # Base para nossos modelos
@@ -88,7 +89,8 @@ def get_telefone(nome):
     else:
         print("Usuário não encontrado")
         return None
-
+    session.close()
+"""
 def verificar_porcentagem():
     session = Session()
     usuario = session.query(Usuario).filter(Usuario.nome).all()
@@ -96,14 +98,14 @@ def verificar_porcentagem():
         if usuario.porcentagem < 85:
             print(usuario.telefone, " - Alerta: Presença abaixo de 85%!", usuario.nome)
             Alerts.enviar_alerta_whatsapp(usuario.nome, get_telefone(usuario.nome))
-        #if usuario.porcentagem < 50:
-           # print(" - Alerta: Presença abaixo de 50%!", usuario.nome)
-            #Alerts.enviar_alerta_presenca(usuario.nome)
+        if usuario.porcentagem < 50:
+           print(" - Alerta: Presença abaixo de 50%!", usuario.nome)
+           Alerts.enviar_alerta_presenca(usuario.nome)
     else:
         return None
-
     session.close()
-
+ 
+"""
 def adicionar_aluno(nome, telefone):
     session = Session()
     novo_usuario = Usuario(nome=nome, presenca=0, faltas=0, porcentagem=0, telefone=telefone)
