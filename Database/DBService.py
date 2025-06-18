@@ -93,8 +93,8 @@ def verificar_porcentagem():
     session = Session()
     usuario = session.query(Usuario).filter(Usuario.nome).all()
     if usuario:
-        if usuario.porcentagem < 75:
-            print(usuario.telefone, " - Alerta: Presença abaixo de 70%!", usuario.nome)
+        if usuario.porcentagem < 85:
+            print(usuario.telefone, " - Alerta: Presença abaixo de 85%!", usuario.nome)
             Alerts.enviar_alerta_whatsapp(usuario.nome, get_telefone(usuario.nome))
         #if usuario.porcentagem < 50:
            # print(" - Alerta: Presença abaixo de 50%!", usuario.nome)
