@@ -61,7 +61,7 @@ def abrir_tela_adicionar():
     nome_entry = tk.Entry(adicionar_tela, font=body_font)
     nome_entry.pack(anchor='w', padx=20, fill='x')
 
-    tk.Label(adicionar_tela, text="Telefone do Aluno:", font=body_font, bg='#ffffff').pack(anchor='w', padx=20, pady=(15, 5))
+    tk.Label(adicionar_tela, text="Telefone do Responsável:", font=body_font, bg='#ffffff').pack(anchor='w', padx=20, pady=(15, 5))
     telefone_entry = tk.Entry(adicionar_tela, font=body_font)
     telefone_entry.pack(anchor='w', padx=20, fill='x')
 
@@ -78,7 +78,7 @@ def abrir_tela_adicionar():
 # Janela principal
 chamada = tk.Tk()
 chamada.title("Chamada Escolar")
-chamada.state('zoomed')
+chamada.state('zoomed') #tela maximizada
 chamada.geometry("1366x768")
 chamada.configure(bg='#f0f0f0')
 
