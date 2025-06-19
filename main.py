@@ -12,7 +12,7 @@ def salvar_presenca():
         else:
             Database.DBService.marcar_presenca(nome)
         Database.DBService.calcular_porcentagem(nome)
-        Database.DBService.verificar_porcentagem()
+        Database.DBService.verificar_porcentagem(nome)
         var.set(0)
     chamada.quit()
 

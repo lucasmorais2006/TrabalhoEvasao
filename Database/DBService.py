@@ -2,8 +2,6 @@ from sqlalchemy import create_engine, Column, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-#import Alerts
-
 
 # Base para nossos modelos
 
@@ -28,7 +26,19 @@ Base.metadata.create_all(engine)
 Session = sessionmaker(bind=engine)
 session = Session()
 
+'''
+# Criar novo usuário
+novo_usuario = Usuario(nome="Aline Sebastiana Melissa Barbosa", presenca = 0 ,faltas = 0,  porcentagem = 100, telefone = "51993492356")
 
+# Adicionar à sessão
+session.add(novo_usuario)
+
+# Salvar no banco
+session.commit()
+
+# Fechar sessão
+session.close()
+'''
 
 def nome_alunos():
     session = Session()
@@ -81,31 +91,18 @@ def calcular_porcentagem(nome):
 
     session.close()
 
-def get_telefone(nome):
+def verificar_porcentagem(nome):
     session = Session()
     usuario = session.query(Usuario).filter(Usuario.nome == nome).first()
     if usuario:
-        return usuario.telefone
+        if usuario.porcentagem < 70:
+            print(usuario.telefone, " - Alerta: Presença abaixo de 70%!", usuario.nome)
     else:
         print("Usuário não encontrado")
         return None
+
     session.close()
-"""
-def verificar_porcentagem():
-    session = Session()
-    usuario = session.query(Usuario).filter(Usuario.nome).all()
-    if usuario:
-        if usuario.porcentagem < 85:
-            print(usuario.telefone, " - Alerta: Presença abaixo de 85%!", usuario.nome)
-            Alerts.enviar_alerta_whatsapp(usuario.nome, get_telefone(usuario.nome))
-        if usuario.porcentagem < 50:
-           print(" - Alerta: Presença abaixo de 50%!", usuario.nome)
-           Alerts.enviar_alerta_presenca(usuario.nome)
-    else:
-        return None
-    session.close()
- 
-"""
+
 def adicionar_aluno(nome, telefone):
     session = Session()
     novo_usuario = Usuario(nome=nome, presenca=0, faltas=0, porcentagem=0, telefone=telefone)
@@ -121,7 +118,7 @@ def remover_aluno(nome):
     if usuario:
         session.delete(usuario)
         session.commit()
-        print(f"Usuário {nome} removido com sucesso!")
+        print(f"Usuário {nome} removido com sucesso! Reinicie o programa para ver as alterações.")
     else:
         print("Usuário não encontrado")
 
