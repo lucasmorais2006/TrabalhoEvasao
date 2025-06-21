@@ -20,7 +20,7 @@ def remover_aluno_e_atualizar(nome_do_aluno):
     Database.DBService.remover_aluno(nome_do_aluno)
     atualizar_lista_alunos()
 
-def atualizar_lista_alunos():
+def atualizar_lista_alunos(ordenado=False):
     for widget in frame.winfo_children():
         widget.destroy()
 
@@ -29,14 +29,28 @@ def atualizar_lista_alunos():
         activebackground="#45A049", bd=0, padx=10, pady=5, command=abrir_tela_adicionar
     ).pack(anchor='w', pady=(0, 15))
 
+    # Botão para ordenar por presença
+    tk.Button(
+        frame, text="🔽 Ordenar por Presença", font=btn_font, bg="#9C27B0", fg="white",
+        activebackground="#7B1FA2", bd=0, padx=10, pady=5,
+        command=lambda: atualizar_lista_alunos(ordenado=True)
+    ).pack(anchor='w', pady=(0, 15))
+
     tk.Label(frame, text="✅ Marque os alunos presentes:", font=title_font, bg="#f0f0f0").pack(anchor='w', pady=(0, 15))
 
-    for nome in Database.DBService.nome_alunos():
+    # Puxa os dados dos alunos com a porcentagem
+    alunos = Database.DBService.listar_por_presenca()
+
+    if ordenado:
+        alunos = sorted(alunos, key=lambda aluno: aluno[3], reverse=True)  # Ordena por porcentagem
+
+    for nome, telefone, presenca, porcentagem in alunos:
         var = tk.IntVar()
         linha_frame = tk.Frame(frame, bg="#ffffff", padx=10, pady=5, highlightbackground="#ddd", highlightthickness=1)
         linha_frame.pack(anchor='w', pady=5, fill='x')
 
-        cb = tk.Checkbutton(linha_frame, text=nome, variable=var, font=body_font, bg="#ffffff")
+        texto_cb = f"{nome} - {porcentagem:.1f}%"
+        cb = tk.Checkbutton(linha_frame, text=texto_cb, variable=var, font=body_font, bg="#ffffff")
         cb.pack(side='left')
 
         tk.Button(
@@ -44,12 +58,14 @@ def atualizar_lista_alunos():
             activebackground="#c0392b", bd=0, padx=10, pady=3,
             command=lambda n=nome: remover_aluno_e_atualizar(n)
         ).pack(side='right')
+
         checkboxes[nome] = var
 
     tk.Button(
         frame, text="💾 Salvar Presença", font=btn_font, bg="#2196F3", fg="white",
         activebackground="#1976D2", bd=0, padx=10, pady=8, command=salvar_presenca
     ).pack(anchor='w', pady=30)
+
 
 def abrir_tela_adicionar():
     adicionar_tela = tk.Toplevel(chamada)

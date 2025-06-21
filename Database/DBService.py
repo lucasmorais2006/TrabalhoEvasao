@@ -138,7 +138,7 @@ def atualizar_numero(nome, novo_numero):
 
 def listar_por_presenca():
     session = Session()
-    usuarios = session.query(Usuario).order_by(Usuario.porcentagem.desc()).all()
-    for usuario in usuarios:
-        print(f"{usuario.nome} - Presença: {usuario.porcentagem:.2f}%")
+    alunos = session.query(Usuario).all()
+    resultado = [(a.nome, a.telefone, a.presenca, a.porcentagem or 0) for a in alunos]
     session.close()
+    return resultado
