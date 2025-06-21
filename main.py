@@ -29,7 +29,7 @@ def atualizar_lista_alunos(ordenado=False):
         activebackground="#45A049", bd=0, padx=10, pady=5, command=abrir_tela_adicionar
     ).pack(anchor='w', pady=(0, 15))
 
-    # Botão para ordenar por presença
+    #button para ordenar por presença
     tk.Button(
         frame, text="🔽 Ordenar por Presença", font=btn_font, bg="#9C27B0", fg="white",
         activebackground="#7B1FA2", bd=0, padx=10, pady=5,
@@ -38,11 +38,11 @@ def atualizar_lista_alunos(ordenado=False):
 
     tk.Label(frame, text="✅ Marque os alunos presentes:", font=title_font, bg="#f0f0f0").pack(anchor='w', pady=(0, 15))
 
-    # Puxa os dados dos alunos com a porcentagem
+    #puxar dados dos alunos com a porcentagem
     alunos = Database.DBService.listar_por_presenca()
 
     if ordenado:
-        alunos = sorted(alunos, key=lambda aluno: aluno[3], reverse=True)  # Ordena por porcentagem
+        alunos = sorted(alunos, key=lambda aluno: aluno[3], reverse=True)#ordem
 
     for nome, telefone, presenca, porcentagem in alunos:
         var = tk.IntVar()
@@ -68,7 +68,7 @@ def atualizar_lista_alunos(ordenado=False):
 
 
 def abrir_tela_adicionar():
-    adicionar_tela = tk.Toplevel(chamada)
+    adicionar_tela = tk.Toplevel(chamada)#tk.Toplevel cria uma nova janela que não é a principal.
     adicionar_tela.title("Adicionar Aluno")
     adicionar_tela.geometry("400x250")
     adicionar_tela.configure(bg='#ffffff')
