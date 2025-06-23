@@ -1,7 +1,6 @@
 import tkinter as tk
 from tkinter import font
 import Database.DBService
-import Alerts
 
 checkboxes = {}
 
@@ -95,7 +94,7 @@ def abrir_tela_adicionar():
 chamada = tk.Tk()
 chamada.title("Chamada Escolar")
 chamada.state('zoomed') #tela maximizada
-chamada.geometry("1366x768")
+chamada.geometry("800x600")
 chamada.configure(bg='#f0f0f0')
 
 # Fontes customizadas
@@ -105,7 +104,27 @@ btn_font = font.Font(family="Arial", size=12, weight="bold")
 small_font = font.Font(family="Arial", size=10)
 
 # Frame principal
-frame = tk.Frame(chamada, padx=30, pady=30, bg="#f0f0f0")
+container = tk.Frame(chamada, bg="#f0f0f0")
+container.pack(fill='both', expand=True)
+
+canvas = tk.Canvas(container, bg="#f0f0f0")
+scrollbar = tk.Scrollbar(container, orient="vertical", command=canvas.yview)
+scrollbar.pack(side="right", fill="y")
+
+scrollable_frame = tk.Frame(canvas, bg="#f0f0f0")
+
+scrollable_frame.bind(
+    "<Configure>",
+    lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
+)
+
+canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+canvas.configure(yscrollcommand=scrollbar.set)
+
+canvas.pack(side="left", fill="both", expand=True)
+
+
+frame = tk.Frame(scrollable_frame, padx=30, pady=30, bg="#f0f0f0")
 frame.pack(anchor='w', fill='both', expand=True)
 
 atualizar_lista_alunos()
