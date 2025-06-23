@@ -13,7 +13,7 @@ def salvar_presenca():
         Database.DBService.calcular_porcentagem(nome)
         Database.DBService.verificar_porcentagem(nome)
         var.set(0)
-    chamada.quit()
+    chamada.destroy()
 
 def remover_aluno_e_atualizar(nome_do_aluno):
     Database.DBService.remover_aluno(nome_do_aluno)
@@ -90,42 +90,91 @@ def abrir_tela_adicionar():
         activebackground="#45A049", bd=0, padx=10, pady=8, command=adicionar_aluno_callback
     ).pack(pady=25)
 
-# Janela principal
-chamada = tk.Tk()
-chamada.title("Chamada Escolar")
-chamada.state('zoomed') #tela maximizada
-chamada.geometry("800x600")
-chamada.configure(bg='#f0f0f0')
+def iniciar_chamada():
+    tela_inicial.destroy()
+    iniciar_programa()
+
+def encerrar_programa():
+    tela_inicial.destroy()
+
+def iniciar_programa():
+    # Janela principal
+    global chamada
+    chamada = tk.Tk()
+    chamada.title("Chamada Escolar")
+    chamada.state('zoomed')  # tela maximizada
+    chamada.geometry("800x600")
+    chamada.configure(bg='#f0f0f0')
+
+    # Fontes customizadas
+    global title_font, body_font, btn_font, small_font
+    title_font = font.Font(family="Arial", size=16, weight="bold")
+    body_font = font.Font(family="Arial", size=12)
+    btn_font = font.Font(family="Arial", size=12, weight="bold")
+    small_font = font.Font(family="Arial", size=10)
+
+    # Frame principal com scroll
+    container = tk.Frame(chamada, bg="#f0f0f0")
+    container.pack(fill='both', expand=True)
+
+    canvas = tk.Canvas(container, bg="#f0f0f0")
+    scrollbar = tk.Scrollbar(container, orient="vertical", command=canvas.yview)
+    scrollbar.pack(side="right", fill="y")
+
+    scrollable_frame = tk.Frame(canvas, bg="#f0f0f0")
+
+    scrollable_frame.bind(
+        "<Configure>",
+        lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
+    )
+
+    canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+    canvas.configure(yscrollcommand=scrollbar.set)
+
+    canvas.pack(side="left", fill="both", expand=True)
+
+    # Adicione seus widgets ao `scrollable_frame` em vez de `frame`
+    global frame
+    frame = tk.Frame(scrollable_frame, padx=30, pady=30, bg="#f0f0f0")
+    frame.pack(anchor='w', fill='both', expand=True)
+
+    atualizar_lista_alunos()
+    chamada.mainloop()
+
+# Tela inicial
+tela_inicial = tk.Tk()
+tela_inicial.title("Tela Inicial")
+tela_inicial.geometry("800x600")
+tela_inicial.configure(bg='#f0f0f0')
 
 # Fontes customizadas
 title_font = font.Font(family="Arial", size=16, weight="bold")
-body_font = font.Font(family="Arial", size=12)
 btn_font = font.Font(family="Arial", size=12, weight="bold")
-small_font = font.Font(family="Arial", size=10)
 
-# Frame principal
-container = tk.Frame(chamada, bg="#f0f0f0")
-container.pack(fill='both', expand=True)
+# Frame principal da tela inicial
+frame_inicial = tk.Frame(tela_inicial, bg="#f0f0f0")
+frame_inicial.pack(expand=True)
 
-canvas = tk.Canvas(container, bg="#f0f0f0")
-scrollbar = tk.Scrollbar(container, orient="vertical", command=canvas.yview)
-scrollbar.pack(side="right", fill="y")
-
-scrollable_frame = tk.Frame(canvas, bg="#f0f0f0")
-
-scrollable_frame.bind(
-    "<Configure>",
-    lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
+# botao pra iniciar chamada
+btn_iniciar = tk.Button(
+    frame_inicial,
+    text="Iniciar Chamada",
+    font=btn_font,
+    bg="#007BFF",  # Azul
+    fg="white",
+    command=iniciar_chamada
 )
+btn_iniciar.pack(pady=20, ipadx=20, ipady=10)
 
-canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
-canvas.configure(yscrollcommand=scrollbar.set)
+# botão para fechar o programa
+btn_encerrar = tk.Button(
+    frame_inicial,
+    text="Encerrar Programa",
+    font=btn_font,
+    bg="#FF0000",  # Vermelho
+    fg="white",
+    command=encerrar_programa
+)
+btn_encerrar.pack(pady=20, ipadx=20, ipady=10)
 
-canvas.pack(side="left", fill="both", expand=True)
-
-
-frame = tk.Frame(scrollable_frame, padx=30, pady=30, bg="#f0f0f0")
-frame.pack(anchor='w', fill='both', expand=True)
-
-atualizar_lista_alunos()
-chamada.mainloop()
+tela_inicial.mainloop()
